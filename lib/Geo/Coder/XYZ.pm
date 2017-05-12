@@ -83,7 +83,6 @@ sub geocode {
 		$location = Encode::encode_utf8($location);
 	}
 
-	$ENV{'PERL_LWP_SSL_VERIFY_HOSTNAME'} = 0;
 	my $uri = URI->new("https://$self->{host}/some_location/");
 	$location =~ s/\s/+/g;
 	my %query_parameters = ('locate' => $location);
