@@ -12,7 +12,7 @@ use URI;
 
 =head1 NAME
 
-Geo::Coder::XYZ - Provides a geocoding functionality using http:://geocoder.xyz
+Geo::Coder::XYZ - Provides a geocoding functionality using https://geocode.xyz
 
 =head1 VERSION
 
@@ -31,7 +31,7 @@ our $VERSION = '0.01';
 
 =head1 DESCRIPTION
 
-Geo::Coder::XYZ provides an interface to geocoder.xyz, a free geocode database covering many countries.
+Geo::Coder::XYZ provides an interface to geocode.xyz, a free geocode database covering many countries.
 
 =head1 METHODS
 
@@ -158,7 +158,7 @@ Based on L<Geo::Coder::Coder::Googleplaces>.
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
 
-Lots of thanks to the folks at geocoder.xyz.
+Lots of thanks to the folks at geocode.xyz.
 
 =head1 SEE ALSO
 
