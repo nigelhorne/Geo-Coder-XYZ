@@ -1,4 +1,4 @@
-# Geo::Coder::XIZ
+# Geo::Coder::XYZ
 
 Provides a geocoding functionality using https://geocode.xyz
 
