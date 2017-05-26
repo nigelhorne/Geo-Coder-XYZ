@@ -3,7 +3,7 @@
 use warnings;
 use strict;
 use Test::Number::Delta within => 1e-2;
-use Test::Most tests => 9;
+use Test::Most tests => 11;
 
 BEGIN {
 	use_ok('Geo::Coder::XYZ');
@@ -11,7 +11,7 @@ BEGIN {
 
 UK: {
 	SKIP: {
-		skip 'Test requires Internet access', 8 unless(-e 't/online.enabled');
+		skip 'Test requires Internet access', 10 unless(-e 't/online.enabled');
 
 		require Test::LWP::UserAgent;
 		Test::LWP::UserAgent->import();
@@ -24,6 +24,10 @@ UK: {
 		my $location = $geocoder->geocode('10 Downing St., London, UK');
 		delta_ok($location->{latt}, 51.50);
 		delta_ok($location->{longt}, -0.13);
+
+		$location = $geocoder->geocode('Wokingham, Berkshire, England');
+		delta_ok($location->{latt}, 51.41);
+		delta_ok($location->{longt}, -0.83);
 
 		$location = $geocoder->geocode(location => '10 Downing St., London, UK');
 		delta_ok($location->{latt}, 51.50);
