@@ -122,7 +122,7 @@ environment variables:
 
 You can also set your own User-Agent object:
 
-  $geocoder->ua(LWPx::ParanoidAgent->new());
+  $geocoder->ua(LWP::UserAgent::Throttled->new());
 
 =cut
 
