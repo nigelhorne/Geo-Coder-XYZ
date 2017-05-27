@@ -100,7 +100,8 @@ sub geocode {
 	my $json = JSON->new->utf8;
 	my $rc = $json->decode($res->content);
 
-	if(wantarray && $rc->{'otherlocations'} && $rc->{'otherlocations'}->{'loc'}) {
+	if(wantarray && $rc->{'otherlocations'} && $rc->{'otherlocations'}->{'loc'} &&
+	   (ref($rc->{'otherlocations'}->{'loc'}) eq 'ARRAY')) {
 		my @rc = @{$rc->{'otherlocations'}->{'loc'}};
 		if(scalar(@rc)) {
 			return @rc;
