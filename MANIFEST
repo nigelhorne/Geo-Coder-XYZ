@@ -31,5 +31,6 @@ t/spelling.t
 t/strict.t
 t/uk.t
 t/unused.t
+t/us.t
 t/used.t
 t/vars.t
