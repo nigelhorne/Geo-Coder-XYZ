@@ -15,18 +15,7 @@ XYZ: {
 	SKIP: {
 		skip 'Test requires Internet access', 4 unless(-e 't/online.enabled');
 
-		eval {
-			require Test::Number::Delta;
-
-			Test::Number::Delta->import();
-		};
-
-		if($@) {
-			diag('Geo::Coder::XYZ not installed - skipping tests');
-			skip 'Geo::Coder::XYZ not installed', 4;
-		} else {
-			diag("Using Geo::Coder::XYZ $Geo::Coder::XYZ::VERSION");
-		}
+		diag("Using Geo::Coder::XYZ $Geo::Coder::XYZ::VERSION");
 
 		my $geocoder = new_ok('Geo::Coder::XYZ');
 
