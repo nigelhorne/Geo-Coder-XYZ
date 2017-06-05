@@ -16,11 +16,11 @@ Geo::Coder::XYZ - Provides a geocoding functionality using https://geocode.xyz
 
 =head1 VERSION
 
-Version 0.04
+Version 0.05
 
 =cut
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 =head1 SYNOPSIS
 
