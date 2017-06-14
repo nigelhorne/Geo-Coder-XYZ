@@ -8,6 +8,7 @@ use Encode;
 use JSON;
 use HTTP::Request;
 use LWP::UserAgent;
+use LWP::Protocol::https;
 use URI;
 
 =head1 NAME
@@ -119,11 +120,12 @@ Accessor method to get and set UserAgent object used internally. You
 can call I<env_proxy> for example, to get the proxy information from
 environment variables:
 
-  $geocoder->ua()->env_proxy(1);
+    $geocoder->ua()->env_proxy(1);
 
 You can also set your own User-Agent object:
 
-  $geocoder->ua(LWP::UserAgent::Throttled->new());
+    use LWP::UserAgent::Throttled;
+    $geocoder->ua(LWP::UserAgent::Throttled->new());
 
 =cut
 
