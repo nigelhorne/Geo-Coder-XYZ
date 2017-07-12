@@ -87,6 +87,9 @@ sub geocode {
 	}
 
 	my $uri = URI->new("https://$self->{host}/some_location/");
+	if($location =~ /(.+),\s*England$/i) {
+		$location = "$1, United Kingdom";	# geocode.xyz gets confused between England and New England
+	}
 	$location =~ s/\s/+/g;
 	my %query_parameters = ('locate' => $location, 'json' => 1, 'moreinfo' => 1);
 	$uri->query_form(%query_parameters);
