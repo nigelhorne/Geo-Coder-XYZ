@@ -37,7 +37,7 @@ UK: {
 
 		$location = $geocoder->geocode('Wokingham, Berkshire, England');
 		delta_within($location->{latt}, 51.42, 1e-2);
-		delta_within($location->{longt}, -0.87, 1e-2);
+		delta_within($location->{longt}, -0.84, 1e-2);
 
 		$location = $geocoder->geocode(location => '10 Downing St., London, UK');
 		delta_within($location->{latt}, 51.50, 1e-2);
