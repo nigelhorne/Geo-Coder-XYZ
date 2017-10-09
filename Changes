@@ -1,5 +1,8 @@
 Revision history for Geo-Coder-XYZ
 
+0.07
+	Give better error message on failure
+
 0.06	Mon Jul 24 08:31:32 EDT 2017
 	Fix RT#122441
 
