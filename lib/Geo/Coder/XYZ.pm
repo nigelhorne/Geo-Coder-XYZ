@@ -91,7 +91,11 @@ sub geocode {
 		$location = "$1, United Kingdom";	# geocode.xyz gets confused between England and New England
 	}
 	$location =~ s/\s/+/g;
-	my %query_parameters = ('locate' => $location, 'json' => 1, 'moreinfo' => 1);
+	my %query_parameters = ('locate' => $location, 'json' => 1);
+	if(wantarray) {
+		# moreinfo is needed to find alternatives when the given location is ambiguous
+		$query_parameters{'moreinfo'} = 1;
+	}
 	$uri->query_form(%query_parameters);
 	my $url = $uri->as_string;
 
