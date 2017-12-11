@@ -103,6 +103,7 @@ sub geocode {
 
 	if ($res->is_error) {
 		Carp::croak("geocode.xyz API returned error: on $url " . $res->status_line());
+		return 0;
 	}
 
 	my $json = JSON->new->utf8;
