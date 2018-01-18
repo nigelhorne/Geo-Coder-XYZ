@@ -16,7 +16,7 @@ UK: {
 		Test::LWP::UserAgent->import();
 
 		require Test::Carp;
-		Test::Carp->import();;
+		Test::Carp->import();
 
 		eval {
 			require Test::Number::Delta;
@@ -50,7 +50,7 @@ UK: {
 		delta_within($location->{longt}, -0.13, 1e-2);
 
 		my $address = $geocoder->reverse_geocode(latlng => '51.50,-0.13');
-		like($address->{'city'}, qr/^London$/i, 'test reverse');
+		is($address->{'city'}, 'London', 'test reverse');
 
 		my $ua = new_ok('Test::LWP::UserAgent');
 		$ua->map_response('geocode.xyz', new_ok('HTTP::Response' => [ '500' ]));

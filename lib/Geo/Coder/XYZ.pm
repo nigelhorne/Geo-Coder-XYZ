@@ -66,7 +66,7 @@ sub new {
 
     @locations = $geocoder->geocode('Portland, USA');
     diag 'There are Portlands in ', join (', ', map { $_->{'state'} } @locations);
-    	
+
 =cut
 
 sub geocode {
@@ -80,7 +80,7 @@ sub geocode {
 	}
 
 	my $location = $param{location}
-		or Carp::croak("Usage: geocode(location => \$location)");
+		or Carp::carp("Usage: geocode(location => \$location)");
 
 	if (Encode::is_utf8($location)) {
 		$location = Encode::encode_utf8($location);
@@ -102,12 +102,23 @@ sub geocode {
 	my $res = $self->{ua}->get($url);
 
 	if ($res->is_error) {
-		Carp::croak("geocode.xyz API returned error: on $url " . $res->status_line());
-		return 0;
+		Carp::carp("geocode.xyz API returned error: on $url " . $res->status_line());
+		return { };
 	}
 
-	my $json = JSON->new->utf8;
-	my $rc = $json->decode($res->content);
+	my $json = JSON->new()->utf8();
+	my $rc;
+	eval {
+		$rc = $json->decode($res->content());
+	};
+	if(!defined($rc)) {
+		if($@) {
+			Carp::carp("$url: $@");
+			return { };
+		}
+		Carp::carp("$url: can't decode the JSON ", $res->content());
+		return { };
+	}
 
 	if($rc->{'otherlocations'} && $rc->{'otherlocations'}->{'loc'} &&
 	   (ref($rc->{'otherlocations'}->{'loc'}) eq 'ARRAY')) {
@@ -165,10 +176,10 @@ sub reverse_geocode {
 	}
 
 	my $latlng = $param{latlng}
-		or Carp::croak("Usage: reverse_geocode(latlng => \$latlng)");
+		or Carp::carp("Usage: reverse_geocode(latlng => \$latlng)");
 
 	return $self->geocode(location => $latlng, reverse => 1);
-};
+}
 
 =head1 AUTHOR
 
