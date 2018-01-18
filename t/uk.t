@@ -56,7 +56,7 @@ UK: {
 		$ua->map_response('geocode.xyz', new_ok('HTTP::Response' => [ '500' ]));
 
 		$geocoder->ua($ua);
-		does_carp_that_matches(sub { 
+		does_carp_that_matches(sub {
 			$location = $geocoder->geocode('10 Downing St., London, UK');
 		}, qr/^geocode.xyz API returned error: on.+500/);
 	}
