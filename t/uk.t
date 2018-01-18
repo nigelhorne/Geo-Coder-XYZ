@@ -2,7 +2,7 @@
 
 use warnings;
 use strict;
-use Test::Most tests => 14;
+use Test::Most tests => 15;
 
 BEGIN {
 	use_ok('Geo::Coder::XYZ');
@@ -10,7 +10,7 @@ BEGIN {
 
 UK: {
 	SKIP: {
-		skip 'Test requires Internet access', 13 unless(-e 't/online.enabled');
+		skip 'Test requires Internet access', 14 unless(-e 't/online.enabled');
 
 		require Test::LWP::UserAgent;
 		Test::LWP::UserAgent->import();
@@ -33,7 +33,7 @@ UK: {
 
 		my $location = $geocoder->geocode('Ramsgate, Kent, England');
 		delta_within($location->{latt}, 51.33, 1e-2);
-		delta_within($location->{longt}, 1.42, 1e-2);
+		delta_within($location->{longt}, 1.40, 1e-2);
 
 		$geocoder = new_ok('Geo::Coder::XYZ');
 
@@ -50,16 +50,14 @@ UK: {
 		delta_within($location->{longt}, -0.13, 1e-2);
 
 		my $address = $geocoder->reverse_geocode(latlng => '51.50,-0.13');
-		is($address->{'city'}, 'London', 'test reverse');
+		is($address->{'city'}, 'LONDON', 'test reverse');
 
 		my $ua = new_ok('Test::LWP::UserAgent');
 		$ua->map_response('geocode.xyz', new_ok('HTTP::Response' => [ '500' ]));
 
 		$geocoder->ua($ua);
-		eval {
-			does_carp_that_matches(sub { 
-				$location = $geocoder->geocode('10 Downing St., London, UK');
-			}, qr/^geocode.xyz API returned error: 500/);
-		};
+		does_carp_that_matches(sub { 
+			$location = $geocoder->geocode('10 Downing St., London, UK');
+		}, qr/^geocode.xyz API returned error: on.+500/);
 	}
 }

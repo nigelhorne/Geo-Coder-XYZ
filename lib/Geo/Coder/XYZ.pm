@@ -80,7 +80,7 @@ sub geocode {
 	}
 
 	my $location = $param{location}
-		or Carp::carp("Usage: geocode(location => \$location)");
+		or Carp::croak("Usage: geocode(location => \$location)");
 
 	if (Encode::is_utf8($location)) {
 		$location = Encode::encode_utf8($location);
