@@ -32,7 +32,7 @@ UK: {
 		my $geocoder = new_ok('Geo::Coder::XYZ');
 
 		my $location = $geocoder->geocode('Ramsgate, Kent, England');
-		delta_within($location->{latt}, 51.33, 1e-2);
+		delta_within($location->{latt}, 51.34, 1e-2);
 		delta_within($location->{longt}, 1.40, 1e-2);
 
 		$geocoder = new_ok('Geo::Coder::XYZ');
@@ -50,7 +50,7 @@ UK: {
 		delta_within($location->{longt}, -0.13, 1e-2);
 
 		my $address = $geocoder->reverse_geocode(latlng => '51.50,-0.13');
-		is($address->{'city'}, 'LONDON', 'test reverse');
+		like($address->{'city'}, qr/(City of Westminster|LONDON)/, 'test reverse');
 
 		my $ua = new_ok('Test::LWP::UserAgent');
 		$ua->map_response('geocode.xyz', new_ok('HTTP::Response' => [ '500' ]));

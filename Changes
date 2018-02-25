@@ -5,6 +5,7 @@ Revision history for Geo-Coder-XYZ
 	Only give 'moreinfo' parameter when needed
 	return failure after croak
 	Change croak to carp
+	Fix RT#124542
 
 0.06	Mon Jul 24 08:31:32 EDT 2017
 	Fix RT#122441
