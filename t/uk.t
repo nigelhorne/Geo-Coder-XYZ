@@ -2,7 +2,7 @@
 
 use warnings;
 use strict;
-use Test::Most tests => 14;
+use Test::Most tests => 15;
 
 BEGIN {
 	use_ok('Geo::Coder::XYZ');
