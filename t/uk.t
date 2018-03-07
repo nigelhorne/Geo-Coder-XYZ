@@ -2,7 +2,7 @@
 
 use warnings;
 use strict;
-use Test::Most tests => 15;
+use Test::Most tests => 14;
 
 BEGIN {
 	use_ok('Geo::Coder::XYZ');
@@ -34,8 +34,6 @@ UK: {
 		my $location = $geocoder->geocode('Ramsgate, Kent, England');
 		delta_within($location->{latt}, 51.34, 1e-2);
 		delta_within($location->{longt}, 1.40, 1e-2);
-
-		$geocoder = new_ok('Geo::Coder::XYZ');
 
 		$location = $geocoder->geocode('10 Downing St., London, UK');
 		delta_within($location->{latt}, 51.50, 1e-2);
