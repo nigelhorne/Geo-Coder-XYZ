@@ -2,7 +2,7 @@
 
 use warnings;
 use strict;
-use Test::Most tests => 15;
+use Test::Most tests => 14;
 
 BEGIN {
 	use_ok('Geo::Coder::XYZ');
@@ -10,7 +10,7 @@ BEGIN {
 
 UK: {
 	SKIP: {
-		skip 'Test requires Internet access', 14 unless(-e 't/online.enabled');
+		skip 'Test requires Internet access', 13 unless(-e 't/online.enabled');
 
 		require Test::LWP::UserAgent;
 		Test::LWP::UserAgent->import();
