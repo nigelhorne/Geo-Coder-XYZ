@@ -56,6 +56,6 @@ UK: {
 		$geocoder->ua($ua);
 		does_carp_that_matches(sub {
 			$location = $geocoder->geocode('10 Downing St., London, UK');
-		}, qr/^geocode.xyz API returned error: on.+500/);
+		}, qr/^API returned error: on.+500/);
 	}
 }
