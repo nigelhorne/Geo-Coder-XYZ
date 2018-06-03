@@ -10,7 +10,10 @@ BEGIN {
 
 UK: {
 	SKIP: {
-		skip 'Test requires Internet access', 13 unless(-e 't/online.enabled');
+		if(!-e 't/online.enabled') {
+			diag('Online tests disabled');
+			skip 'Test requires Internet access', 13;
+		}
 
 		require Test::LWP::UserAgent;
 		Test::LWP::UserAgent->import();
