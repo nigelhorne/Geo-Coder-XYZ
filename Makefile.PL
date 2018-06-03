@@ -14,7 +14,11 @@ if($ENV{RELEASE_TESTING}) {
 	Getopt::Long::GetOptions('online-tests!' => \$online_tests);
 
 	if(!defined($online_tests)) {
-		$online_tests = are_online();
+		if($ENV{RELEASE_TESTING}) {
+			$online_tests = are_online();
+		} else {
+			$online_tests = 0;
+		}
 	}
 }
 
