@@ -11,7 +11,10 @@ BEGIN {
 
 CA: {
 	SKIP: {
-		skip 'Test requires Internet access', 7 unless(-e 't/online.enabled');
+		if(!-e 't/online.enabled') {
+			diag('Online tests disabled');
+			skip 'Test requires Internet access', 7;
+		}
 
 		eval {
 			require Test::Number::Delta;
