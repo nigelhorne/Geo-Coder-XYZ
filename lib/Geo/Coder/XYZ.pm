@@ -13,7 +13,7 @@ use URI;
 
 =head1 NAME
 
-Geo::Coder::XYZ - Provides a geocoding functionality using https://geocode.xyz
+Geo::Coder::XYZ - Provides a Geo-Coding functionality using L<https://geocode.xyz>
 
 =head1 VERSION
 
@@ -27,21 +27,21 @@ our $VERSION = '0.08';
 
       use Geo::Coder::XYZ;
 
-      my $geocoder = Geo::Coder::XYZ->new();
-      my $location = $geocoder->geocode(location => '10 Downing St., London, UK');
+      my $geo_coder = Geo::Coder::XYZ->new();
+      my $location = $geo_coder->geocode(location => '10 Downing St., London, UK');
 
 =head1 DESCRIPTION
 
-Geo::Coder::XYZ provides an interface to geocode.xyz, a free geocode database covering many countries.
+Geo::Coder::XYZ provides an interface to geocode.xyz, a free Geo-Coding database covering many countries.
 
 =head1 METHODS
 
 =head2 new
 
-    $geocoder = Geo::Coder::XYZ->new();
+    $geo_coder = Geo::Coder::XYZ->new();
     my $ua = LWP::UserAgent->new();
     $ua->env_proxy(1);
-    $geocoder = Geo::Coder::XYZ->new(ua => $ua);
+    $geo_coder = Geo::Coder::XYZ->new(ua => $ua);
 
 =cut
 
@@ -59,28 +59,32 @@ sub new {
 
 =head2 geocode
 
-    $location = $geocoder->geocode(location => $location);
+    $location = $geo_coder->geocode(location => $location);
 
     print 'Latitude: ', $location->{'latt'}, "\n";
     print 'Longitude: ', $location->{'longt'}, "\n";
 
-    @locations = $geocoder->geocode('Portland, USA');
+    @locations = $geo_coder->geocode('Portland, USA');
     diag 'There are Portlands in ', join (', ', map { $_->{'state'} } @locations);
 
 =cut
 
 sub geocode {
 	my $self = shift;
-
 	my %param;
-	if (@_ % 2 == 0) {
+
+	if(ref($_[0]) eq 'HASH') {
+		%param = %{$_[0]};
+	} elsif(ref($_[0])) {
+		Carp::croak('Usage: geocode(location => $location)');
+	} elsif(@_ % 2 == 0) {
 		%param = @_;
 	} else {
 		$param{location} = shift;
 	}
 
 	my $location = $param{location}
-		or Carp::croak("Usage: geocode(location => \$location)");
+		or Carp::croak('Usage: geocode(location => $location)');
 
 	if (Encode::is_utf8($location)) {
 		$location = Encode::encode_utf8($location);
@@ -140,12 +144,12 @@ Accessor method to get and set UserAgent object used internally. You
 can call I<env_proxy> for example, to get the proxy information from
 environment variables:
 
-    $geocoder->ua()->env_proxy(1);
+    $geo_coder->ua()->env_proxy(1);
 
 You can also set your own User-Agent object:
 
     use LWP::UserAgent::Throttled;
-    $geocoder->ua(LWP::UserAgent::Throttled->new());
+    $geo_coder->ua(LWP::UserAgent::Throttled->new());
 
 =cut
 
@@ -159,7 +163,7 @@ sub ua {
 
 =head2 reverse_geocode
 
-    $location = $geocoder->reverse_geocode(latlng => '37.778907,-122.39732');
+    $location = $geo_coder->reverse_geocode(latlng => '37.778907,-122.39732');
 
 Similar to geocode except it expects a latitude/longitude parameter.
 
@@ -176,7 +180,7 @@ sub reverse_geocode {
 	}
 
 	my $latlng = $param{latlng}
-		or Carp::carp("Usage: reverse_geocode(latlng => \$latlng)");
+		or Carp::carp('Usage: reverse_geocode(latlng => $latlng)');
 
 	return $self->geocode(location => $latlng, reverse => 1);
 }
@@ -185,7 +189,7 @@ sub reverse_geocode {
 
 Nigel Horne <njh@bandsman.co.uk>
 
-Based on L<Geo::Coder::Coder::Googleplaces>.
+Based on L<Geo::Coder::GooglePlaces>.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
