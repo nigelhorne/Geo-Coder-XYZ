@@ -11,8 +11,13 @@ BEGIN {
 UK: {
 	SKIP: {
 		if(!-e 't/online.enabled') {
-			diag('Online tests disabled');
-			skip 'Test requires Internet access', 13;
+			if(!$ENV{AUTHOR_TESTING}) {
+				diag('Author tests not required for installation');
+				skip('Author tests not required for installation', 13);
+			} else {
+				diag('Test requires Internet access');
+				skip('Test requires Internet access', 13);
+			}
 		}
 
 		require Test::LWP::UserAgent;
@@ -43,15 +48,15 @@ UK: {
 		delta_within($location->{longt}, -0.13, 1e-2);
 
 		$location = $geocoder->geocode(location => 'Wokingham, Berkshire, England');
-		delta_within($location->{latt}, 51.42, 1e-2);
-		delta_within($location->{longt}, -0.87, 1e-2);
+		delta_within($location->{latt}, 51.43, 1e-2);
+		delta_within($location->{longt}, -0.88, 1e-2);
 
 		$location = $geocoder->geocode(location => '10 Downing St., London, UK');
 		delta_within($location->{latt}, 51.50, 1e-2);
 		delta_within($location->{longt}, -0.13, 1e-2);
 
 		my $address = $geocoder->reverse_geocode(latlng => '51.50,-0.13');
-		like($address->{'city'}, qr/(City of Westminster|LONDON)/, 'test reverse');
+		like($address->{'city'}, qr/(City of Westminster|London)/i, 'test reverse');
 
 		my $ua = new_ok('Test::LWP::UserAgent');
 		$ua->map_response('geocode.xyz', new_ok('HTTP::Response' => [ '500' ]));

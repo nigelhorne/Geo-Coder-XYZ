@@ -17,11 +17,11 @@ Geo::Coder::XYZ - Provides a Geo-Coding functionality using L<https://geocode.xy
 
 =head1 VERSION
 
-Version 0.08
+Version 0.09
 
 =cut
 
-our $VERSION = '0.08';
+our $VERSION = '0.09';
 
 =head1 SYNOPSIS
 
@@ -106,7 +106,7 @@ sub geocode {
 	my $res = $self->{ua}->get($url);
 
 	if ($res->is_error) {
-		Carp::carp("API returned error: on $url " . $res->status_line());
+		Carp::carp("API returned error: on $url ", $res->status_line());
 		return { };
 	}
 
