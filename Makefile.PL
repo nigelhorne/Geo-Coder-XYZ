@@ -20,7 +20,6 @@ if($ENV{AUTHOR_TESTING}) {
 	}
 }
 
-
 my $test_requires = {
 	'Test::Most' => 0,
 	'Test::NoWarnings' => 0,
@@ -109,8 +108,7 @@ EOF
 			return 1;	# The default is 'y'
 		}
 		return $rc;
-	} else {
-		print "On-line tests disabled because I couldn't detect an Internet connexion\n";
-		return 0;
 	}
+	print "On-line tests disabled because I couldn't detect an Internet connexion\n";
+	return 0;
 }
