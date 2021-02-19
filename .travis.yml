@@ -42,7 +42,7 @@ before_install:
   - perl -V
   - build-dist
   - cd $BUILD_DIR
-  - cpanm -qin --skip-satisfied Devel::Cover::Report::Coveralls Test::Pod::Spelling::CommonMistakes Test::Portability::Files Test::Taint Test::Carp Test::Pod::Coverage JSON::XS Test::LWP::UserAgent
+  - cpanm -qin --skip-satisfied Devel::Cover::Report::Coveralls Test::Pod::Spelling::CommonMistakes Test::Portability::Files Test::Taint Test::Carp Test::Pod::Coverage JSON::XS Test::LWP::UserAgent LWP::UserAgent::Throttled
 
 install:
   - cpanm -qin --skip-satisfied --installdeps --notest .

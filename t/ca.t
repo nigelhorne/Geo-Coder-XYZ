@@ -27,7 +27,24 @@ CA: {
 			skip('Test::Number::Delta not installed', 7);
 		}
 
+		my $ua;
+
+		eval {
+			require LWP::UserAgent::Throttled;
+
+			LWP::UserAgent::Throttled->import();
+
+			$ua = LWP::UserAgent::Throttled->new();
+			$ua->throttle({ 'geocode.xyz' => 2 });
+			$ua->env_proxy(1);
+		};
+
 		my $geocoder = new_ok('Geo::Coder::XYZ');
+
+		if($ua) {
+			$geocoder->ua($ua);
+		}
+
 		my $location = $geocoder->geocode('9235 Main St, Richibucto, New Brunswick, Canada');
 		delta_within($location->{latt}, 46.7, 1e-1);
 		delta_within($location->{longt}, -64.9, 1e-1);

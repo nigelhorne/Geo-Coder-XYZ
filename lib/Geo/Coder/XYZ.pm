@@ -158,7 +158,9 @@ environment variables:
 You can also set your own User-Agent object:
 
     use LWP::UserAgent::Throttled;
-    $geo_coder->ua(LWP::UserAgent::Throttled->new());
+    my $ua = LWP::UserAgent::Throttled->new();
+    $ua->throttle({ 'geocode.xyz' => 2 });
+    $geo_coder->ua($ua);
 
 =cut
 

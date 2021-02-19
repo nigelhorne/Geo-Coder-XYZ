@@ -16,6 +16,7 @@ XYZ: {
 		skip('Test requires Internet access', 4) unless(-e 't/online.enabled');
 
 		my $geocoder = new_ok('Geo::Coder::XYZ');
+		sleep(1);	# Avoid throttling
 
 		# Check list context finds both Portland, ME and Portland, OR
 		my @locations = $geocoder->geocode('Portland, US');

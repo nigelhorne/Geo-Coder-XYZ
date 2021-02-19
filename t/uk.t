@@ -2,7 +2,8 @@
 
 use warnings;
 use strict;
-use Test::Most tests => 14;
+use Test::Most tests => 15;
+use Test::NoWarnings;
 
 BEGIN {
 	use_ok('Geo::Coder::XYZ');
@@ -13,10 +14,10 @@ UK: {
 		if(!-e 't/online.enabled') {
 			if(!$ENV{AUTHOR_TESTING}) {
 				diag('Author tests not required for installation');
-				skip('Author tests not required for installation', 13);
+				skip('Author tests not required for installation', 14);
 			} else {
 				diag('Test requires Internet access');
-				skip('Test requires Internet access', 13);
+				skip('Test requires Internet access', 14);
 			}
 		}
 
@@ -34,10 +35,26 @@ UK: {
 
 		if($@) {
 			diag('Test::Number::Delta not installed - skipping tests');
-			skip 'Test::Number::Delta not installed', 13;
+			skip 'Test::Number::Delta not installed', 14;
 		}
 
+		my $ua;
+
+		eval {
+			require LWP::UserAgent::Throttled;
+
+			LWP::UserAgent::Throttle->import;
+
+			$ua = LWP::UserAgent::Throttled->new();
+			$ua->throttle({ 'geocode.xyz' => 2 });
+			$ua->env_proxy(1);
+		};
+
 		my $geocoder = new_ok('Geo::Coder::XYZ');
+
+		if($ua) {
+			$geocoder->ua($ua);
+		}
 
 		my $location = $geocoder->geocode('Ramsgate, Kent, England');
 		delta_within($location->{latt}, 51.3, 1e-1);
@@ -58,7 +75,7 @@ UK: {
 		my $address = $geocoder->reverse_geocode(latlng => '51.50,-0.13');
 		like($address->{'city'}, qr/(City of Westminster|London)/i, 'test reverse');
 
-		my $ua = new_ok('Test::LWP::UserAgent');
+		$ua = new_ok('Test::LWP::UserAgent');
 		$ua->map_response('geocode.xyz', new_ok('HTTP::Response' => [ '500' ]));
 
 		$geocoder->ua($ua);
