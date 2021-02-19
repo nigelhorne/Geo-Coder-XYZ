@@ -14,10 +14,10 @@ UK: {
 		if(!-e 't/online.enabled') {
 			if(!$ENV{AUTHOR_TESTING}) {
 				diag('Author tests not required for installation');
-				skip('Author tests not required for installation', 14);
+				skip('Author tests not required for installation', 13);
 			} else {
 				diag('Test requires Internet access');
-				skip('Test requires Internet access', 14);
+				skip('Test requires Internet access', 13);
 			}
 		}
 
@@ -35,7 +35,7 @@ UK: {
 
 		if($@) {
 			diag('Test::Number::Delta not installed - skipping tests');
-			skip 'Test::Number::Delta not installed', 14;
+			skip 'Test::Number::Delta not installed', 13;
 		}
 
 		my $ua;
