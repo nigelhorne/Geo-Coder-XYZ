@@ -8,19 +8,18 @@ my $online_tests;
 
 if($ENV{AUTHOR_TESTING}) {
 	$online_tests = are_online();
-} elsif($ENV{AUTOMATED_TESTING} || $ENV{NO_NETWORK_TESTING} || (!-t STDIN)) {
-	$online_tests = 0;
 } else {
 	Getopt::Long::GetOptions('online-tests!' => \$online_tests);
 
 	if(!defined($online_tests)) {
-		if($ENV{AUTHOR_TESTING}) {
-			$online_tests = are_online();
-		} else {
-			$online_tests = 0;
-		}
+		$online_tests = are_online();
+	}
+	if(!$online_tests) {
+		print "On-line tests have been disabled\n";
+		$online_tests = 0;
 	}
 }
+
 
 my $test_requires = {
 	'Test::Most' => 0,
@@ -77,11 +76,18 @@ WriteMakefile(
 
 sub are_online
 {
+	return 0 if($ENV{'NO_NETWORK_TESTING'});
+	return 0 if(!-t STDIN);
+
 	my $s = IO::Socket::INET->new(
 		PeerAddr => 'geocode.xyz:443',
 		Timeout => 10
 	);
 	if($s) {
+		if($ENV{'PERL_MM_USE_DEFAULT'} || $ENV{'AUTOMATED_TESTING'}) {
+			close($s);
+			return 1;
+		}
 		print <<EOF;
 
 You appear to be directly connected to the Internet.  I have some tests

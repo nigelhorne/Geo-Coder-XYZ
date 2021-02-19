@@ -46,13 +46,22 @@ Geo::Coder::XYZ provides an interface to geocode.xyz, a free Geo-Coding database
 =cut
 
 sub new {
-	my($class, %param) = @_;
+	my $proto = shift;
+	my $class = ref($proto) || $proto;
 
-	my $ua = delete $param{ua} || LWP::UserAgent->new(agent => __PACKAGE__ . "/$VERSION");
-	if(!defined($param{'host'})) {
+	# Use Geo::Coder::XYZ->new(), not Geo::Coder::XYZ::new()
+	if(!defined($class)) {
+		carp(__PACKAGE__, ' use ->new() not ::new() to instantiate');
+		return;
+	}
+
+	my %args = (ref($_[0]) eq 'HASH') ? %{$_[0]} : @_;
+
+	my $ua = delete $args{ua} || LWP::UserAgent->new(agent => __PACKAGE__ . "/$VERSION");
+	if(!defined($args{'host'})) {
 		$ua->ssl_opts(verify_hostname => 0);	# Yuck
 	}
-	my $host = delete $param{host} || 'geocode.xyz';
+	my $host = delete $args{host} || 'geocode.xyz';
 
 	return bless { ua => $ua, host => $host }, $class;
 }
@@ -65,7 +74,7 @@ sub new {
     print 'Longitude: ', $location->{'longt'}, "\n";
 
     @locations = $geo_coder->geocode('Portland, USA');
-    diag 'There are Portlands in ', join (', ', map { $_->{'state'} } @locations);
+    print 'There are Portlands in ', join (', ', map { $_->{'state'} } @locations), "\n";
 
 =cut
 
@@ -187,7 +196,7 @@ sub reverse_geocode {
 
 =head1 AUTHOR
 
-Nigel Horne <njh@bandsman.co.uk>
+Nigel Horne, C<< <njh at bandsman.co.uk> >>
 
 Based on L<Geo::Coder::GooglePlaces>.
 
@@ -202,7 +211,7 @@ L<Geo::Coder::GooglePlaces>, L<HTML::GoogleMaps::V3>
 
 =head1 LICENSE AND COPYRIGHT
 
-Copyright 2017-2018 Nigel Horne.
+Copyright 2017-2021 Nigel Horne.
 
 This program is released under the following licence: GPL2
 

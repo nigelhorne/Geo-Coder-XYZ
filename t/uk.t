@@ -40,20 +40,20 @@ UK: {
 		my $geocoder = new_ok('Geo::Coder::XYZ');
 
 		my $location = $geocoder->geocode('Ramsgate, Kent, England');
-		delta_within($location->{latt}, 51.34, 1e-2);
-		delta_within($location->{longt}, 1.39, 1e-2);
+		delta_within($location->{latt}, 51.3, 1e-1);
+		delta_within($location->{longt}, 1.4, 1e-1);
 
 		$location = $geocoder->geocode({ location => '10 Downing St., London, UK' });
-		delta_within($location->{latt}, 51.50, 1e-2);
-		delta_within($location->{longt}, -0.13, 1e-2);
+		delta_within($location->{latt}, 51.5, 1e-1);
+		delta_within($location->{longt}, 0.1, 1e-1);
 
 		$location = $geocoder->geocode(location => 'Wokingham, Berkshire, England');
-		delta_within($location->{latt}, 51.43, 1e-2);
-		delta_within($location->{longt}, -0.88, 1e-2);
+		delta_within($location->{latt}, 51.4, 1e-1);
+		delta_within($location->{longt}, -0.8, 1e-1);
 
 		$location = $geocoder->geocode(location => '10 Downing St., London, UK');
-		delta_within($location->{latt}, 51.50, 1e-2);
-		delta_within($location->{longt}, -0.13, 1e-2);
+		delta_within($location->{latt}, 51.5, 1e-1);
+		delta_within($location->{longt}, 0.1, 1e-1);
 
 		my $address = $geocoder->reverse_geocode(latlng => '51.50,-0.13');
 		like($address->{'city'}, qr/(City of Westminster|London)/i, 'test reverse');
