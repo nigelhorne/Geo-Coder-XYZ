@@ -86,6 +86,7 @@ sub geocode {
 		%param = %{$_[0]};
 	} elsif(ref($_[0])) {
 		Carp::croak('Usage: geocode(location => $location)');
+		return;	# Not sure why this is needed, but t/carp.t fails without it
 	} elsif(@_ % 2 == 0) {
 		%param = @_;
 	} else {
@@ -136,7 +137,7 @@ sub geocode {
 	if($rc->{'otherlocations'} && $rc->{'otherlocations'}->{'loc'} &&
 	   (ref($rc->{'otherlocations'}->{'loc'}) eq 'ARRAY')) {
 		my @rc = @{$rc->{'otherlocations'}->{'loc'}};
-	   	if(wantarray) {
+		if(wantarray) {
 			return @rc;
 		}
 		return $rc[0];
