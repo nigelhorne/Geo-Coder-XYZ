@@ -57,7 +57,11 @@ sub new {
 
 	my %args = (ref($_[0]) eq 'HASH') ? %{$_[0]} : @_;
 
-	my $ua = delete $args{ua} || LWP::UserAgent->new(agent => __PACKAGE__ . "/$VERSION");
+	my $ua = $args{ua};
+	if(!defined($ua)) {
+		$ua = LWP::UserAgent->new(agent => __PACKAGE__ . "/$VERSION");
+		$ua->default_header(accept_encoding => 'gzip,deflate');
+	}
 	if(!defined($args{'host'})) {
 		$ua->ssl_opts(verify_hostname => 0);	# Yuck
 	}
@@ -123,7 +127,7 @@ sub geocode {
 	my $json = JSON->new()->utf8();
 	my $rc;
 	eval {
-		$rc = $json->decode($res->content());
+		$rc = $json->decode($res->decoded_content());
 	};
 	if(!defined($rc)) {
 		if($@) {
