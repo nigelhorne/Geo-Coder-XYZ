@@ -91,7 +91,7 @@ sub geocode {
 	} elsif(ref($_[0])) {
 		Carp::croak('Usage: geocode(location => $location)');
 		return;	# Not sure why this is needed, but t/carp.t fails without it
-	} elsif(@_ % 2 == 0) {
+	} elsif((@_ % 2) == 0) {
 		%param = @_;
 	} else {
 		$param{location} = shift;

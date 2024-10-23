@@ -1,3 +1,5 @@
+#!/usr/bin/env perl
+
 use strict;
 use warnings;
 use ExtUtils::MakeMaker 6.64;	# 6.64 for TEST_REQUIRES
@@ -6,7 +8,7 @@ use IO::Socket::INET;
 
 my $online_tests;
 
-if($ENV{AUTHOR_TESTING}) {
+if($ENV{'AUTHOR_TESTING'}) {
 	$online_tests = are_online();
 } else {
 	Getopt::Long::GetOptions('online-tests!' => \$online_tests);
@@ -16,11 +18,11 @@ if($ENV{AUTHOR_TESTING}) {
 	}
 	if(!$online_tests) {
 		print "On-line tests have been disabled\n";
-		$online_tests = 0;
 	}
 }
 
 my $test_requires = {
+	'Test::DescribeMe' => 0,
 	'Test::Most' => 0,
 	'Test::NoWarnings' => 0,
 };
@@ -33,6 +35,15 @@ if($online_tests) {
 	$test_requires->{'Test::Carp'} = 0;
 } else {
 	unlink('t/online.enabled');
+}
+
+my $dist = {
+	COMPRESS => 'gzip -9f',
+	SUFFIX => 'gz'
+};
+
+if($^O eq 'darwin') {
+	$dist->{'TAR'} = 'gtar';
 }
 
 WriteMakefile(
@@ -53,8 +64,7 @@ WriteMakefile(
 	'LWP::UserAgent' => 0,
 	'LWP::Protocol::https' => 0,
 	'URI' => 0,
-    },
-    dist		=> { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
+    }, dist => $dist,
     clean		=> { FILES => 'Geo-Coder-XYZ-*' },
     META_MERGE		=> {
     	'meta-spec' => { version => 2 },
@@ -75,15 +85,13 @@ WriteMakefile(
 
 sub are_online
 {
-	return 0 if($ENV{'NO_NETWORK_TESTING'});
-	return 0 if(!-t STDIN);
+	return 0 if($ENV{'NO_NETWORK_TESTING'} || $ENV{'CIRCLECI'} || $ENV{'TRAVIS_PERL_VERSION'} || $ENV{'AUTOMATED_TESTING'} || $ENV{'NONINTERACTIVE_TESTING'} || (!-t STDIN));
 
-	my $s = IO::Socket::INET->new(
+	if(my $s = IO::Socket::INET->new(
 		PeerAddr => 'geocode.xyz:443',
 		Timeout => 10
-	);
-	if($s) {
-		if($ENV{'PERL_MM_USE_DEFAULT'} || $ENV{'AUTOMATED_TESTING'}) {
+	)) {
+		if($ENV{'PERL_MM_USE_DEFAULT'}) {
 			close($s);
 			return 1;
 		}
