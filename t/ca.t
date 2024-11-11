@@ -4,6 +4,7 @@ use warnings;
 use strict;
 use Test::Most tests => 9;
 use Test::NoWarnings;
+use Test::Needs 'LWP::UserAgent::Throttled', 'Test::Number::Delta';
 
 BEGIN {
 	use_ok('Geo::Coder::XYZ');
@@ -16,34 +17,15 @@ CA: {
 			skip('Test requires Internet access', 7);
 		}
 
-		eval {
-			require Test::Number::Delta;
+		Test::Number::Delta->import();
 
-			Test::Number::Delta->import();
-		};
-
-		if($@) {
-			diag('Test::Number::Delta not installed - skipping tests');
-			skip('Test::Number::Delta not installed', 7);
-		}
-
-		my $ua;
-
-		eval {
-			require LWP::UserAgent::Throttled;
-
-			LWP::UserAgent::Throttled->import();
-
-			$ua = LWP::UserAgent::Throttled->new();
-			$ua->throttle({ 'geocode.xyz' => 2 });
-			$ua->env_proxy(1);
-		};
+		my $ua = new_ok('LWP::UserAgent::Throttled');
+		$ua->throttle({ 'geocode.xyz' => 3 });
+		$ua->env_proxy(1);
 
 		my $geocoder = new_ok('Geo::Coder::XYZ');
 
-		if($ua) {
-			$geocoder->ua($ua);
-		}
+		$geocoder->ua($ua);
 
 		my $location = $geocoder->geocode('9235 Main St, Richibucto, New Brunswick, Canada');
 		delta_within($location->{latt}, 46.7, 1e-1);

@@ -22,9 +22,10 @@ if($ENV{'AUTHOR_TESTING'}) {
 }
 
 my $test_requires = {
+	'LWP::UserAgent::Throttled' => 0,
 	'Test::DescribeMe' => 0,
 	'Test::Most' => 0,
-	'Test::NoWarnings' => 0,
+	'Test::NoWarnings' => 0
 };
 
 if($online_tests) {
