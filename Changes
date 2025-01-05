@@ -1,6 +1,7 @@
 Revision history for Geo-Coder-XYZ
 
 0.10
+	geocode(): croak when input is just a set of numbers
 	Compress the traffic
 	Use JSON::MaybeXS instead of JSON
 	Use Test::DescribeMe to simplify tests

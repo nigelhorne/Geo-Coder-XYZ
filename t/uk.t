@@ -62,7 +62,7 @@ UK: {
 
 		$location = $geocoder->geocode({ location => '10 Downing St., London, UK' });
 		delta_within($location->{latt}, 51.5, 1e-1);
-		delta_within($location->{longt}, 0.1, 1e-1);
+		delta_within($location->{longt}, -0.1, 1e-1);
 
 		$location = $geocoder->geocode(location => 'Wokingham, Berkshire, England');
 		delta_within($location->{latt}, 51.4, 1e-1);
@@ -70,7 +70,7 @@ UK: {
 
 		$location = $geocoder->geocode(location => '10 Downing St., London, UK');
 		delta_within($location->{latt}, 51.5, 1e-1);
-		delta_within($location->{longt}, 0.1, 1e-1);
+		delta_within($location->{longt}, -0.1, 1e-1);
 
 		my $address = $geocoder->reverse_geocode(latlng => '51.50,-0.13');
 		like($address->{'city'}, qr/(City of Westminster|London)/i, 'test reverse');
