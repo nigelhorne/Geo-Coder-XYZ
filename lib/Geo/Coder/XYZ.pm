@@ -65,7 +65,7 @@ sub new {
 	if(!defined($args{'host'})) {
 		$ua->ssl_opts(verify_hostname => 0);	# Yuck
 	}
-	my $host = delete $args{host} || 'geocode.xyz';
+	my $host = $args{host} || 'geocode.xyz';
 
 	return bless { ua => $ua, host => $host }, $class;
 }
