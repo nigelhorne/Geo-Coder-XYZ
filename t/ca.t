@@ -2,7 +2,7 @@
 
 use warnings;
 use strict;
-use Test::Most tests => 9;
+use Test::Most tests => 10;
 use Test::NoWarnings;
 use Test::Needs 'LWP::UserAgent::Throttled', 'Test::Number::Delta';
 
@@ -14,7 +14,7 @@ CA: {
 	SKIP: {
 		if(!-e 't/online.enabled') {
 			diag('Online tests disabled');
-			skip('Test requires Internet access', 7);
+			skip('Test requires Internet access', 8);
 		}
 
 		Test::Number::Delta->import();
