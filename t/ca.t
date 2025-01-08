@@ -2,13 +2,11 @@
 
 use warnings;
 use strict;
-use Test::Most tests => 10;
-use Test::NoWarnings;
+use Test::Most 'no_plan';
 use Test::Needs 'LWP::UserAgent::Throttled', 'Test::Number::Delta';
+use Test::NoWarnings;
 
-BEGIN {
-	use_ok('Geo::Coder::XYZ');
-}
+BEGIN { use_ok('Geo::Coder::XYZ') }
 
 CA: {
 	SKIP: {
