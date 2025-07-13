@@ -2,18 +2,16 @@
 
 use strict;
 use warnings;
+
 use Test::Most;
-use Geo::Coder::XYZ;
+
+BEGIN { use_ok('Geo::Coder::XYZ') }
 
 CARP: {
-	eval 'use Test::Carp';
+	my $g = new_ok('Geo::Coder::XYZ');
 
-	if($@) {
-		plan(skip_all => 'Test::Carp needed to check error messages');
-	} else {
-		my $g = new_ok('Geo::Coder::XYZ');
-		does_croak_that_matches(sub { my $location = $g->geocode(); }, qr/^Usage: geocode\(/);
-		does_croak_that_matches(sub { my $location = $g->geocode(\'New Brunswick, Canada'); }, qr/^Usage: geocode\(/);
-		done_testing();
-	}
+	throws_ok { my $location = $g->geocode(); } qr/^Usage: /, 'No args dies';
+	lives_ok { my $location = $g->geocode(\'New Brunswick, Canada'); } 'Passing just a location is fine';
+
+	done_testing();
 }

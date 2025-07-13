@@ -9,6 +9,7 @@ use JSON::MaybeXS;
 use HTTP::Request;
 use LWP::UserAgent;
 use LWP::Protocol::https;
+use Params::Get;
 use URI;
 
 =head1 NAME
@@ -55,17 +56,17 @@ sub new {
 		return;
 	}
 
-	my %args = (ref($_[0]) eq 'HASH') ? %{$_[0]} : @_;
+	my $params = Params::Get::get_params(undef, \@_);
 
-	my $ua = $args{ua};
+	my $ua = $params->{ua};
 	if(!defined($ua)) {
 		$ua = LWP::UserAgent->new(agent => __PACKAGE__ . "/$VERSION");
 		$ua->default_header(accept_encoding => 'gzip,deflate');
 	}
-	if(!defined($args{'host'})) {
+	if(!defined($params->{'host'})) {
 		$ua->ssl_opts(verify_hostname => 0);	# Yuck
 	}
-	my $host = $args{host} || 'geocode.xyz';
+	my $host = $params->{host} || 'geocode.xyz';
 
 	return bless { ua => $ua, host => $host }, $class;
 }
@@ -84,25 +85,14 @@ sub new {
 
 sub geocode {
 	my $self = shift;
-	my %params;
+	my $params = Params::Get::get_params('location', \@_);
 
-	if(ref($_[0]) eq 'HASH') {
-		%params = %{$_[0]};
-	} elsif(ref($_[0])) {
-		Carp::croak('Usage: geocode(location => $location)');
-		return;	# Not sure why this is needed, but t/carp.t fails without it
-	} elsif((@_ % 2) == 0) {
-		%params = @_;
-	} else {
-		$params{location} = shift;
-	}
-
-	my $location = $params{location}
+	my $location = $params->{location}
 		or Carp::croak('Usage: geocode(location => $location)');
 
 	# Fail when the input is just a set of numbers
-	if($params{'location'} !~ /\D/) {
-		Carp::croak('Usage: ', __PACKAGE__, ": invalid input to geocode(), $params{location}");
+	if($params->{'location'} !~ /\D/) {
+		Carp::croak('Usage: ', __PACKAGE__, ": invalid input to geocode(), $params->{location}");
 		return;
 	}
 
