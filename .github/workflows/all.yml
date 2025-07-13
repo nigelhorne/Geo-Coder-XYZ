@@ -1,13 +1,16 @@
 ---
+# See https://github.com/actions/virtual-environments
+# https://github.com/marketplace/actions/setup-perl-environment
+
 on:
-permissions:
-  contents: read
   push:
     branches:
       - '*'
     tags-ignore:
       - '*'
   pull_request:
+permissions:
+  contents: read
 jobs:
   build:
     permissions:
