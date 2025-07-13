@@ -10,7 +10,7 @@ Geo::Coder::XYZ - Provides a Geo-Coding functionality using [https://geocode.xyz
 
 # VERSION
 
-Version 0.09
+Version 0.10
 
 # SYNOPSIS
 
@@ -84,6 +84,6 @@ Lots of thanks to the folks at geocode.xyz.
 
 # LICENSE AND COPYRIGHT
 
-Copyright 2017-2021 Nigel Horne.
+Copyright 2017-2025 Nigel Horne.
 
 This program is released under the following licence: GPL2
