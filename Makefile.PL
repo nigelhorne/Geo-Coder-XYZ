@@ -50,7 +50,7 @@ if($^O eq 'darwin') {
 
 WriteMakefile(
     NAME		=> 'Geo::Coder::XYZ',
-    AUTHOR		=> q{Nigel Horne <njh@bandsman.co.uk>},
+    AUTHOR		=> q{Nigel Horne <njh@nigelhorne.com>},
     VERSION_FROM	=> 'lib/Geo/Coder/XYZ.pm',
     ABSTRACT_FROM       => 'lib/Geo/Coder/XYZ.pm',
     ((defined($ExtUtils::MakeMaker::VERSION) &&
@@ -59,7 +59,9 @@ WriteMakefile(
       : ()),
     PL_FILES	=> {},
 	TEST_REQUIRES => $test_requires,
-    PREREQ_PM => {
+	CONFIGURE_REQUIRES => {
+		'ExtUtils::MakeMaker' => 6.64,	# Minimum version for TEST_REQUIRES
+    }, PREREQ_PM => {
 	'Encode' => 0,
 	'JSON::MaybeXS' => 0,
 	'HTTP::Request' => 0,

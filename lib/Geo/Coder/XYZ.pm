@@ -181,25 +181,24 @@ Similar to geocode except it expects a latitude/longitude parameter.
 
 =cut
 
-sub reverse_geocode {
+sub reverse_geocode
+{
 	my $self = shift;
-	my %param;
+	my $params = Params::Get::get_params('latlng', \@_);
 
-	if((@_ % 2) == 0) {
-		%param = @_;
-	} else {
-		$param{latlng} = shift;
-	}
-
-	my $latlng = $param{latlng}
+	my $latlng = $params->{'latlng'}
 		or Carp::carp('Usage: reverse_geocode(latlng => $latlng)');
 
 	return $self->geocode(location => $latlng, reverse => 1);
 }
 
+=head1 SUPPORT
+
+This module is provided as-is without any warranty.
+
 =head1 AUTHOR
 
-Nigel Horne, C<< <njh at bandsman.co.uk> >>
+Nigel Horne, C<< <njh at nigelhorne.com> >>
 
 Based on L<Geo::Coder::GooglePlaces>.
 
@@ -214,7 +213,7 @@ L<Geo::Coder::GooglePlaces>, L<HTML::GoogleMaps::V3>
 
 =head1 LICENSE AND COPYRIGHT
 
-Copyright 2017-2021 Nigel Horne.
+Copyright 2017-2025 Nigel Horne.
 
 This program is released under the following licence: GPL2
 

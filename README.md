@@ -53,7 +53,9 @@ environment variables:
 You can also set your own User-Agent object:
 
     use LWP::UserAgent::Throttled;
-    $geo_coder->ua(LWP::UserAgent::Throttled->new());
+    my $ua = LWP::UserAgent::Throttled->new();
+    $ua->throttle({ 'geocode.xyz' => 2 });
+    $geo_coder->ua($ua);
 
 ## reverse\_geocode
 
@@ -61,9 +63,13 @@ You can also set your own User-Agent object:
 
 Similar to geocode except it expects a latitude/longitude parameter.
 
+# SUPPORT
+
+This module is provided as-is without any warranty.
+
 # AUTHOR
 
-Nigel Horne <njh@bandsman.co.uk>
+Nigel Horne, `<njh at nigelhorne.com>`
 
 Based on [Geo::Coder::GooglePlaces](https://metacpan.org/pod/Geo%3A%3ACoder%3A%3AGooglePlaces).
 
