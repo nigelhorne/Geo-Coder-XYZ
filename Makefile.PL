@@ -27,6 +27,7 @@ my $test_requires = {
 	# (META_MERGE below), and t/reference.t skips the comparisons it cannot
 	# make when it is absent.
 	'Geo::Location::Predicate' => 0,
+	'IPC::System::Simple' => 0,
 	'LWP::UserAgent::Throttled' => 0,
 	'Test::DescribeMe' => 0,
 	'Test::Most' => 0,
